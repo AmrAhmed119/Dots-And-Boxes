@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1640027578 source:c:\users\hp\desktop\programming project\dots and boxes\main.c
+	<stdio.h>
+	<stdlib.h>
+	"colors.h"
+	"mainmenu.h"
+
+1640027005 c:\users\hp\desktop\programming project\dots and boxes\colors.h
+
+1640027413 c:\users\hp\desktop\programming project\dots and boxes\mainmenu.h
+
+1640024937 c:\users\hp\desktop\programming project\dots and boxes\startgame.h
+
