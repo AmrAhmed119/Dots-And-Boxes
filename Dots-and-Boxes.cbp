@@ -32,10 +32,12 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="colors.h" />
+		<Unit filename="gameloop.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="mainmenu.h" />
+		<Unit filename="printgame.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
