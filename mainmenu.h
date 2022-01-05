@@ -43,8 +43,8 @@ int mode(int z){
     system("cls");
 
     printf(UWHT"\n Choose Game Mode:\n\n"reset);
-    printf(BCYN"  1- 2 players              (enter 1 to choose)\n");
-    printf(BCYN"  2- 1 player VS Computer   (enter 2 to choose)\n\n");
+    printf(BCYN"  1- 1 player vs computer    (enter 1 to choose)\n");
+    printf(BCYN"  2- 2 players               (enter 2 to choose)\n\n");
     printf(BWHT" Choose Number:");
     scanf("%d",&z);
 

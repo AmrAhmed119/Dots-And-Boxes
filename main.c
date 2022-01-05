@@ -3,13 +3,16 @@
 #include <string.h>
 #include "colors.h"
 #include "mainmenu.h"
-#include "gameloop.h"
+#include "comparecharacters.h"
 #include "printgame.h"
+#include "gameloop.h"
+//#include "checkBox.h"
 #define MAXSIZE 256
-
+int Size;
 int main()
 {
     system("");
+    system("cls");
     int i,j,z,m,n;
 
     typedef struct{
@@ -33,7 +36,7 @@ int main()
         printf(BBLU"\n\n  Enter your name (Player 1),Enter one name without spaces : "reset);
         scanf("%s",one.name);
 
-        if(m==1){
+        if(m==2){
             system("cls");
             printf(BRED"\n\n  Enter your name (Player 2),Enter one name without spaces : " reset);
             scanf("%s",two.name);
@@ -46,7 +49,7 @@ int main()
         }
     }
 
-    int Size =2*n+2;
+     Size =2*n+2;
 
     char game[Size][Size];
     for(int j=0; j < Size; j++)
@@ -80,9 +83,8 @@ int main()
     two.score=0;
     one.moves= 0;
     two.moves = 0;
-    printGame(Size,game,one.name,two.name,one.score,two.score,one.moves,two.moves,remMoves);
 
-
+    gameloop( Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves);
 
 
     if(i==2){

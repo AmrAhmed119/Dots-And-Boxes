@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="checkBox.h" />
 		<Unit filename="colors.h" />
 		<Unit filename="gameloop.h" />
 		<Unit filename="main.c">
