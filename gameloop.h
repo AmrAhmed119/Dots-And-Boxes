@@ -1,30 +1,45 @@
-void gameloop(int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,clock_t End,clock_t start)
+void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves)
 {
 
     int row,col;
+    int RowCol[2];
     char h = 205; //horizontal (odd,even)
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
     char turn=1; //which player
     int playing =1; //0 when the game finished
     int invalid=0;
-    End = 0;
     char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //this helps us in coloring player's move
 
-    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,End,start);
+    clock_t time_start;
+    clock_t time_end ;
+
+    time_end = clock();
+
+    time_start = clock();
+    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end);
 
     while(playing)   //Game Loop
     {
 
 
+        if( ((m==2) && (turn==1)) || ((m==2) && (turn==2)) || ((m==1) && (turn==1)))
+        {
 
-        printf(BWHT"\tEnter Row: ");
-        scanf("%d",&row);
+            printf(BWHT"\tEnter Row: ");
+            scanf("%d",&row);
 
-        printf(BWHT"\t\t\tEnter Column: ");
-        scanf("%d",&col);
+            printf(BWHT"\t\t\tEnter Column: ");
+            scanf("%d",&col);
+        }
 
-        End = clock();
+
+        if((m==1) && (turn==2))
+        {
+            computer(n,Size,game,RowCol);
+            row = RowCol[0];
+            col = RowCol[1];
+        }
 
         if((row==0) && (col==0))    //undo
         {
@@ -280,7 +295,8 @@ void gameloop(int Size,char game[Size][Size],char name1[],char name2[],int score
 
         }
 
-        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,End,start);
+        time_end = clock();
+        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end);
 
 
         if(remMoves!=0)
@@ -304,7 +320,7 @@ void gameloop(int Size,char game[Size][Size],char name1[],char name2[],int score
             }
             else
             {
-                printf(BYEL"\n    Tie game\n\t\t\t\tGame Ended,hope you enjoyed"reset);
+                printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed"reset);
             }
         }
     }

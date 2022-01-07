@@ -5,6 +5,7 @@
 #include "colors.h"
 #include "mainmenu.h"
 #include "comparecharacters.h"
+#include "vsComputer.h"
 #include "printgame.h"
 #include "gameloop.h"
 #define MAXSIZE 256
@@ -14,20 +15,25 @@ int main()
 {
     system("");
     system("cls");
+
+    srand(time(NULL));
+
     int i,j,z,m,n;
 
-    typedef struct{
-    char name[MAXSIZE];
-    int moves;
-    int score;
-    int namelen;
+    typedef struct
+    {
+        char name[MAXSIZE];
+        int moves;
+        int score;
+        int namelen;
     } player;
 
     player one,two;
 
-    i = startMenu(i);
+    i = startMenu();
 
-    if(i==1){
+    if(i==1)
+    {
 
         n = difficuilty(j);
         m = mode(z);
@@ -38,20 +44,22 @@ int main()
         scanf("%s",one.name);
         one.namelen = strlen(one.name);
 
-        if(m==2){
+        if(m==2)
+        {
             system("cls");
             printf(BRED"\n\n  Enter your name (Player 2),Enter one name without spaces : " reset);
             scanf("%s",two.name);
             two.namelen = strlen(two.name);
             system("cls");
         }
-        else{
+        else
+        {
             strcpy(two.name,"computer");
             system("cls");
         }
     }
 
-     Size =2*n+2;
+    Size =2*n+2;
 
     char game[Size][Size];
     for(int j=0; j < Size; j++)
@@ -63,8 +71,9 @@ int main()
             for(int i=1; i < Size; i=i+2)
             {
                 game[i][j] = 254;
-                if(i!=Size-1){
-                game[i+1][j] =' ';
+                if(i!=Size-1)
+                {
+                    game[i+1][j] =' ';
                 }
             }
         }
@@ -73,8 +82,9 @@ int main()
             for(int i=1; i < Size; i = i+2)
             {
                 game[i][j] =' ';
-                if(i!=Size-1){
-                game[i+1][j] =' ';
+                if(i!=Size-1)
+                {
+                    game[i+1][j] =' ';
                 }
             }
         }
@@ -85,19 +95,21 @@ int main()
     two.score=0;
     one.moves= 0;
     two.moves = 0;
-    clock_t start,end,diff;
-    start = clock();
-    gameloop(Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves,end,start);
+
+    gameloop(n,m,Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves);
 
 
-    if(i==2){
-
-    }
-    if(i==3){
+    if(i==2)
+    {
 
     }
-    if(i==4){
+    if(i==3)
+    {
 
+    }
+    if(i==4)  //End Game
+    {
+        return 0;
     }
 
 

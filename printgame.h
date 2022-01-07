@@ -1,4 +1,4 @@
-void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int turn,clock_t start,clock_t End)
+void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int turn,clock_t t1,clock_t t2)
 {
 
     system("cls");
@@ -8,8 +8,12 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
 
-    int sec = (End - start)%60;
-    int Min = (End - start)/60;
+    int timediff = (t2-t1) / CLOCKS_PER_SEC;
+    int Min,sec;
+
+    sec = timediff % 60;
+    Min = timediff / 60;
+
     for(int i=0; i<Size; i++)
     {
         printf("   \t\t\t\t\t");
@@ -99,11 +103,12 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
     printf(BRED"        Player 2 moves : %d\t\t\t\t"reset,moves2);
     printf(BBLU"        Score 1: %d\t\t\t\t\t\t"reset,score1);
     printf(BRED"                Score 2: %d\t\t\t\t\n\n"reset,score2);
-    printf(BYEL"           Number of remaining moves: %d\t\t\t"reset,remMoves);
-    printf(BYEL"          Time : %d:%d\n\n"reset,Min,sec);
-    printf(BWHT"   Enter number of row and column \t(for a choose 10)\t (for b choose 11)\n         0, 0 for undo\t1, 1 for redo\t 2, 2 for save\t 3, 3 for main menu\n\n"reset);
+    printf(BYEL"           Number of remaining moves : %d\t\t\t"reset,remMoves);
+    printf(BYEL"          Time : %.2d:%.2d\n\n"reset,Min,sec);
+    printf(BWHT" \t\tEnter number of row and column \t (for a choose 10)\t(for b choose 11)\n\t\t\t0, 0 for undo\t1, 1 for redo\t 2, 2 for save\t 3, 3 for main menu\n\n"reset);
 
-    if(invalid==1){
+    if(invalid==1)
+    {
         printf(BYEL"    Invalid input, Try Again\n"reset);
     }
 

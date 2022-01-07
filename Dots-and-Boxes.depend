@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1640519039 source:c:\users\hp\desktop\programming project\dots and boxes\main.c
+1640637459 source:c:\users\hp\desktop\programming project\dots and boxes\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -7,20 +7,23 @@
 	"colors.h"
 	"mainmenu.h"
 	"comparecharacters.h"
+	"vsComputer.h"
 	"printgame.h"
 	"gameloop.h"
 
 1640291605 c:\users\hp\desktop\programming project\dots and boxes\colors.h
 
-1640465629 c:\users\hp\desktop\programming project\dots and boxes\mainmenu.h
+1640625910 c:\users\hp\desktop\programming project\dots and boxes\mainmenu.h
 
 1640024937 c:\users\hp\desktop\programming project\dots and boxes\startgame.h
 
-1640519046 c:\users\hp\desktop\programming project\dots and boxes\gameloop.h
+1640645502 c:\users\hp\desktop\programming project\dots and boxes\gameloop.h
 
-1640520731 c:\users\hp\desktop\programming project\dots and boxes\printgame.h
+1640645142 c:\users\hp\desktop\programming project\dots and boxes\printgame.h
 
 1640439464 c:\users\hp\desktop\programming project\dots and boxes\checkbox.h
 
 1640439814 c:\users\hp\desktop\programming project\dots and boxes\comparecharacters.h
+
+1640636607 c:\users\hp\desktop\programming project\dots and boxes\vscomputer.h
 

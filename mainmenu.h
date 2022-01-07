@@ -1,5 +1,6 @@
-int startMenu(int i)
+int startMenu()
 {
+    int i;
     printf(UWHT"\t\t\t\tDots and Boxes\n\n"reset);
     printf(UCYN"\t\t\tWelcome to the game,Have Fun\n\n\n"reset);
     printf(BCYN"  1-Start Game:     (enter 1 to choose)\n"reset);
@@ -10,10 +11,14 @@ int startMenu(int i)
     printf(BWHT" Choose a number to move on:"reset);
     scanf("%d",&i);
 
-    while(i!=1 && i!=2 && i!=3 && i!=4)
+    if(i!=1 && i!=2 && i!=3 && i!=4)
     {
-        printf(BWHT"Invalid Number, Choose again:"reset);
-        scanf("%d",&i);
+        /*printf(BWHT"Invalid Number, Choose again:"reset);
+        scanf("%d",&i);*/
+        system("cls");
+        printf(BYEL"Invalid input"reset);
+        startMenu();
+        return i;
     }
 
     return i;
