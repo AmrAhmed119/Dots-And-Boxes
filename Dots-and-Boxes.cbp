@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="checkBox.h" />
 		<Unit filename="colors.h" />
+		<Unit filename="comparecharacters.h" />
 		<Unit filename="gameloop.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

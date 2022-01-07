@@ -1,4 +1,5 @@
-int startMenu(int i){
+int startMenu(int i)
+{
     printf(UWHT"\t\t\t\tDots and Boxes\n\n"reset);
     printf(UCYN"\t\t\tWelcome to the game,Have Fun\n\n\n"reset);
     printf(BCYN"  1-Start Game:     (enter 1 to choose)\n"reset);
@@ -9,15 +10,17 @@ int startMenu(int i){
     printf(BWHT" Choose a number to move on:"reset);
     scanf("%d",&i);
 
-    while(i!=1 && i!=2 && i!=3 && i!=4){
+    while(i!=1 && i!=2 && i!=3 && i!=4)
+    {
         printf(BWHT"Invalid Number, Choose again:"reset);
         scanf("%d",&i);
-        }
+    }
 
     return i;
 }
 
-int difficuilty(int j){
+int difficuilty(int j)
+{
     system("cls");
 
     printf(UWHT"\n Choose level of difficulty:\n\n"reset);
@@ -27,19 +30,23 @@ int difficuilty(int j){
     printf(BWHT" Choose Number:");
     scanf("%d",&j);
 
-    while(j!=1 && j!=2){
+    while(j!=1 && j!=2)
+    {
         printf(BWHT"Invalid Number, Choose again:"reset);
         scanf("%d",&j);
-        }
-    if(j==1){
+    }
+    if(j==1)
+    {
         return 2;
     }
-    else if(j==2){
+    else if(j==2)
+    {
         return 5;
     }
 }
 
-int mode(int z){
+int mode(int z)
+{
     system("cls");
 
     printf(UWHT"\n Choose Game Mode:\n\n"reset);
@@ -48,10 +55,11 @@ int mode(int z){
     printf(BWHT" Choose Number:");
     scanf("%d",&z);
 
-    while(z!=1 && z!=2){
+    while(z!=1 && z!=2)
+    {
         printf(BWHT"Invalid Number, Choose again:"reset);
         scanf("%d",&z);
-        }
+    }
     return z;
 }
 

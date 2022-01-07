@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "colors.h"
 #include "mainmenu.h"
 #include "comparecharacters.h"
 #include "printgame.h"
 #include "gameloop.h"
-//#include "checkBox.h"
 #define MAXSIZE 256
+
 int Size;
 int main()
 {
@@ -35,6 +36,7 @@ int main()
 
         printf(BBLU"\n\n  Enter your name (Player 1),Enter one name without spaces : "reset);
         scanf("%s",one.name);
+        one.namelen = strlen(one.name);
 
         if(m==2){
             system("cls");
@@ -83,8 +85,9 @@ int main()
     two.score=0;
     one.moves= 0;
     two.moves = 0;
-
-    gameloop( Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves);
+    clock_t start,end,diff;
+    start = clock();
+    gameloop(Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves,end,start);
 
 
     if(i==2){
