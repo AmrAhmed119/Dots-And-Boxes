@@ -1,4 +1,4 @@
-// color text
+// text colors
 
 #define BBLK "\e[1;30m"
 #define BRED "\e[1;31m"
