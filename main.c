@@ -5,122 +5,348 @@
 #include "colors.h"
 #include "mainmenu.h"
 #include "comparecharacters.h"
+#include "redo.h"
 #include "undo.h"
-#include "undocomp.h"
 #include "vsComputer.h"
 #include "printgame.h"
 #include "gameloop.h"
 #define MAXSIZE 256
 
+typedef struct         //structure for player
+{
+    char name[MAXSIZE];
+    int moves;
+    int score;
+    int namelen;
+} player;
+
+typedef struct{
+    int score;
+    char name[MAXSIZE];
+    int namelen;
+}user;
+
 int Size;
+
 int main()
 {
     system("");
-    system("cls");
 
     srand(time(NULL));
 
     int i,j,z,m,n;
-
-    typedef struct
-    {
-        char name[MAXSIZE];
-        int moves;
-        int score;
-        int namelen;
-    } player;
+    int turn,moves;
+    int winner;
 
     player one,two;
+    user userarray[11];  //array of structure (used in ranking)
 
-    i = startMenu();
-
-    if(i==1)
-    {
-
-        n = difficuilty(j);
-        m = mode(z);
+    while(1){
 
         system("cls");
 
-        printf(BBLU"\n\n  Enter your name (Player 1),Enter one name without spaces : "reset);
-        scanf("%s",one.name);
-        one.namelen = strlen(one.name);
+        i = startMenu();
 
-        if(m==2)
+        if(i==1)
         {
-            system("cls");
-            printf(BRED"\n\n  Enter your name (Player 2),Enter one name without spaces : " reset);
-            scanf("%s",two.name);
-            two.namelen = strlen(two.name);
-            system("cls");
-        }
-        else
-        {
-            strcpy(two.name,"computer");
-            system("cls");
-        }
-    }
 
-    Size =2*n+2;
+            n = difficuilty(j);
+            m = mode(z);
 
-    char game[Size][Size];
-    for(int j=0; j < Size; j++)
-    {
-        game[0][j] = j;
-        game[j][0] = j;
-        if(j%2 != 0)
-        {
-            for(int i=1; i < Size; i=i+2)
+            system("cls");
+
+            printf(BBLU"\n\n  Enter your name (Player 1) : "reset);
+            fflush(stdin);
+            gets(one.name);
+            one.namelen = strlen(one.name);
+
+            if(m==2)
             {
-                game[i][j] = 254;
-                if(i!=Size-1)
+                system("cls");
+                printf(BRED"\n\n  Enter your name (Player 2) : " reset);
+                fflush(stdin);
+                gets(two.name);
+                two.namelen = strlen(two.name);
+                system("cls");
+            }
+            else
+            {
+                strcpy(two.name,"computer");
+                system("cls");
+            }
+
+
+            Size =2*n+2;
+
+            char game[Size][Size];
+            for(int j=0; j < Size; j++)
+            {
+                game[0][j] = j;
+                game[j][0] = j;
+                if(j%2 != 0)
                 {
-                    game[i+1][j] =' ';
+                    for(int i=1; i < Size; i=i+2)
+                    {
+                        game[i][j] = 254;
+                        if(i!=Size-1)
+                        {
+                            game[i+1][j] =' ';
+                        }
+                    }
+                }
+                else if(j%2 == 0)
+                {
+                    for(int i=1; i < Size; i = i+2)
+                    {
+                        game[i][j] =' ';
+                        if(i!=Size-1)
+                        {
+                            game[i+1][j] =' ';
+                        }
+                    }
+                }
+            }
+
+            int remMoves = 2*n*(n+1);
+            int copygame[remMoves][7];
+            int redogame[remMoves][8];
+            moves=0;
+            turn=1;
+            int redomoves=0;
+            for(int i=0; i<remMoves; i++){
+                for(int j=0; j < 7; j++){
+                        copygame[i][j]=0;
+                }
+            }
+            for(int i=0; i<remMoves; i++){
+                for(int j=0; j < 8; j++){
+                        redogame[i][j]=0;
+                }
+            }
+
+            one.score=0;
+            two.score=0;
+            one.moves= 0;
+            two.moves = 0;
+
+            winner = gameloop(n,m,turn,Size, game, one.name,one.namelen, two.name,two.namelen, one.score, two.score, one.moves, two.moves, remMoves,copygame,redogame,moves,redomoves);
+
+            if(winner==1){
+                printf(BBLU"\n        Player 1 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed\n"reset);
+                int k;
+                printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:");
+                while(1){
+                    scanf("%d",&k);
+                    if(k==1){
+                        exit(1);
+                    }
+                    else if(k==2){
+                        break;
+                    }
+                    else{
+                        printf(BWHT"Invalid input,Try again: "reset);
+
+                    }
+                }
+            }
+            else if(winner==2){
+                printf(BRED"\n        Player 2 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed\n"reset);
+                printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:");
+                int k;
+                scanf("%d",&k);
+                while(1){
+                    scanf("%d",&k);
+                    if(k==1){
+                        exit(1);
+                    }
+                    else if(k==2){
+                        break;
+                    }
+                    else{
+                        printf(BWHT"Invalid input,Try again: "reset);
+
+                    }
+                }
+            }
+            else if(winner==3){
+                printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed\n"reset);
+                printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:"reset);
+                int k;
+                while(1){
+                    scanf("%d",&k);
+                    if(k==1){
+                        exit(1);
+                    }
+                    else if(k==2){
+                        break;
+                    }
+                    else{
+                        printf(BWHT"Invalid input,Try again: "reset);
+
+                    }
+                }
+            }
+
+        }
+
+        if(i==2)
+        {
+            system("cls");
+            int loadNum;
+            printf(BYEL"\n  Enter file number (enter 1 , 2 or 3) : "reset);
+            scanf("%d",&loadNum);
+            if ((loadNum==1) || (loadNum==2) || (loadNum==3)) {
+                char fileName[6];
+                sprintf(fileName,"File%d.bin",loadNum);  // sprintf used to store output on char buffer which are specified in sprintf
+                FILE *load = fopen(fileName,"rb");
+                if(load==NULL){
+                    printf("No existing file\n");
+                }
+                else{
+                    fseek (load, 0, SEEK_END);
+                    int fsize = ftell(load);
+                    if (fsize == 0)
+                    {
+                        fclose(load);
+                        printf(BYEL"\n  file is empty\n"reset);
+                        printf(BYEL"\n  Press Enter to go back or 1 to exit: "reset);
+                        fflush(stdin);
+                        char enter;
+                        scanf("%c",&enter);
+                        if(enter == '1'){
+                            exit(1);
+                        }
+                        else{
+                        continue;
+                        }
+                    }
+                    else
+                    {
+                        fclose(load);
+                        load = fopen(fileName, "rb");
+                    }
+
+                        fread(&n,sizeof(int),1,load);
+                        fread(&m,sizeof(int),1,load);
+
+                        int Size = 2*n+2, remMoves = 2*n*(n+1);
+                        fread(&remMoves,sizeof(int),1,load);
+                        fread(&one.moves,sizeof(int),1,load);
+                        fread(&two.moves,sizeof(int),1,load);
+                        fread(&one.score,sizeof(int),1,load);
+                        fread(&two.score,sizeof(int),1,load);
+                        fread(&turn,sizeof(int),1,load);
+                        int copygame[remMoves][7];
+                        fread(copygame,sizeof(char),sizeof(copygame),load);
+                        int redogame[remMoves][8];
+                        fread(redogame,sizeof(char),sizeof(redogame),load);
+                        int redomoves;
+                        fread(&redomoves,sizeof(int),1,load);
+                        int moves;
+                        fread(&moves,sizeof(int),1,load);
+                        char game[Size][Size];
+                        fread(game,sizeof(char),sizeof(game),load);
+                        fread(&one.namelen,sizeof(int),1,load);
+                        fread(one.name,sizeof(char),one.namelen,load);
+                        one.name[one.namelen] = '\0';
+                    if(m==2){
+                        fread(&two.namelen,sizeof(int),1,load);
+                        fread(two.name,sizeof(char),two.namelen,load);
+                        two.name[two.namelen] = '\0';
+                    }
+                    fclose(load);
+
+                    if(m==1){
+                        strcpy(two.name,"computer");
+                        two.namelen = strlen(two.name);
+                    }
+
+                    winner = gameloop(n,m,turn,Size, game, one.name,one.namelen, two.name,two.namelen, one.score, two.score, one.moves, two.moves, remMoves,copygame,redogame,moves,redomoves);
+
+                    if(winner==1){
+                        printf(BBLU"\n        Player 1 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed\n"reset);
+                        int k;
+                        printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:");
+                        while(1){
+                            scanf("%d",&k);
+                            if(k==1){
+                                exit(1);
+                            }
+                            else if(k==2){
+                                break;
+                            }
+                            else{
+                                printf(BWHT"Invalid input,Try again: "reset);
+
+                            }
+                        }
+                    }
+                    else if(winner==2){
+                        printf(BRED"\n        Player 2 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed\n"reset);
+                        printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:");
+                        int k;
+                        scanf("%d",&k);
+                        while(1){
+                            scanf("%d",&k);
+                            if(k==1){
+                                exit(1);
+                            }
+                            else if(k==2){
+                                break;
+                            }
+                            else{
+                                printf(BWHT"Invalid input,Try again: "reset);
+
+                            }
+                        }
+                    }
+                    else if(winner==3){
+                        printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed\n"reset);
+                        printf(BWHT"  Enter 1 to exit:\n  Enter 2 to return to mainmenu:"reset);
+                        int k;
+                        while(1){
+                            scanf("%d",&k);
+                            if(k==1){
+                                exit(1);
+                            }
+                            else if(k==2){
+                                break;
+                            }
+                            else{
+                                printf(BWHT"Invalid input,Try again: "reset);
+
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                printf(BYEL"\n  There is no existing file"reset);
+                printf(BYEL"\n  Press Enter to go back or 1 to exit: "reset);
+                fflush(stdin);
+                char enter;
+                scanf("%c",&enter);
+                if(enter=='1'){
+                    exit(1);
+                }
+                else{
+                continue;
                 }
             }
         }
-        else if(j%2 == 0)
+
+
+
+
+        if(i==3)
         {
-            for(int i=1; i < Size; i = i+2)
-            {
-                game[i][j] =' ';
-                if(i!=Size-1)
-                {
-                    game[i+1][j] =' ';
-                }
-            }
+
         }
-    }
-
-    int remMoves = 2*n*(n+1);
-    int copygame[remMoves][7];
-    int moves=0;
-    for(int i=0; i<remMoves; i++){
-        for(int j=0; j < 7; j++){
-                copygame[i][j]=0;
+        if(i==4)  //End Game
+        {
+          exit(1);          //return 0;
         }
-    }
-    one.score=0;
-    two.score=0;
-    one.moves= 0;
-    two.moves = 0;
-
-    gameloop(n,m,Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves,copygame,moves);
-
-
-    if(i==2)
-    {
 
     }
-    if(i==3)
-    {
-
-    }
-    if(i==4)  //End Game
-    {
-        return 0;
-    }
-
-
     return 0;
 }

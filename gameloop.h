@@ -1,4 +1,4 @@
-void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int copygame[remMoves][7],int moves)
+int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],int namelen1,char name2[],int namelen2,int score1,int score2,int moves1,int moves2,int remMoves,int copygame[remMoves][7],int redogame[remMoves][8],int moves,int redomoves)
 {
 
     int row,col;
@@ -7,23 +7,24 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
     char h = 205; //horizontal (odd,even)
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
-    int turn=1; //which player
     int playing =1; //0 when the game finished
     int invalid=0;
+    int r=0;
+    int x=1;
     char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //this helps us in coloring player's move
 
     clock_t time_start;
     clock_t time_end ;
-
+    time_start = clock();
     time_end = clock();
 
-    time_start = clock();
-    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
+
+    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u,x);
 
     while(playing)   //Game Loop
     {
         u=1;
-
+        x=1;
 
         if( ((m==2) && (turn==1)) || ((m==2) && (turn==2)) || ((m==1) && (turn==1)))
         {
@@ -49,28 +50,82 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 u=0;
             }
             else{
-                undo(&remMoves,copygame,Size,game,&moves,&turn,&moves1,&moves2,&score1,&score2,m);
+                undo(&remMoves,copygame,Size,game,&moves,&turn,&moves1,&moves2,&score1,&score2,m,redogame,&redomoves,r);
             }
         }
 
         else if((row==1) && (col==1))   //redo
         {
+            if(redomoves==0){
+                x=0;
+            }
+            else{
 
+            redo(&remMoves,Size,game,&turn,&moves,&moves1,&moves2,&score1,&score2,m,redogame,copygame,&redomoves,r);
+            }
         }
 
         else if((row==2) && (col==2))    //save
         {
+            int fileNum;
+            system("cls");
+            printf(BYEL"\n\n   Enter File Number  (choose 1 , 2 or 3): "reset);
+            scanf("%d",&fileNum);
 
+            if((fileNum==1) || (fileNum==2) || (fileNum==3)){
 
+            char whichfile[6];
+            sprintf(whichfile,"File%d.bin",fileNum); // sprintf used to store output on char buffer which are specified in sprintf
+
+            FILE *save;
+            save = fopen(whichfile,"wb");  //saving game data in a file
+
+            fwrite(&n,sizeof(int),1,save);
+            fwrite(&m,sizeof(int),1,save);
+            fwrite(&remMoves,sizeof(int),1,save);
+            fwrite(&moves1,sizeof(int),1,save);
+            fwrite(&moves2,sizeof(int),1,save);
+            fwrite(&score1,sizeof(int),1,save);
+            fwrite(&score2,sizeof(int),1,save);
+            fwrite(&turn,sizeof(int),1,save);
+            fwrite(copygame,sizeof(int),remMoves*7,save);
+            fwrite(redogame,sizeof(int),remMoves*8,save);
+            fwrite(&redomoves,sizeof(int),1,save);
+            fwrite(&moves,sizeof(int),1,save);
+            fwrite(game, sizeof(char),Size * Size,save);
+            fwrite(&namelen1,sizeof(int),1,save);
+            fwrite(name1,sizeof(char),namelen1,save);
+                if(m==2){
+                    fwrite(&namelen2,sizeof(int),1,save);
+                    fwrite(name2,sizeof(char),namelen2,save);
+
+                }
+
+            fclose(save);
+            //printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
+            }
+            else{
+                invalid=1;
+            }
         }
         else if((row==3) && (col==3)) //mainmenu
         {
             system("cls");
-            return;                       //this may cause stackover flow after alot of iterations.
+            return;
         }
 
         else if((row%2==1) && (col%2==0))   //horizontal line
         {
+
+
+            redomoves=0;
+            for(int i=0; i<remMoves; i++)
+            {
+                for(int j=0; j < 8; j++)
+                {
+                    redogame[i][j]=0;
+                }
+            }
 
             if(game[row][col] == ' ')
             {
@@ -200,6 +255,17 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
         }
         else if((row%2==0) && (col%2==1))    //vertical line
         {
+
+            redomoves=0;
+            for(int i=0; i<remMoves; i++)
+            {
+                for(int j=0; j < 8; j++)
+                {
+                    redogame[i][j]=0;
+                }
+            }
+
+
             if(game[row][col] == ' ')
             {
                 invalid=0;
@@ -340,7 +406,7 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
         }
 
         time_end = clock();
-        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
+        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u,x);
 
 
         if(remMoves!=0)
@@ -356,15 +422,18 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
         {
             if(score1>score2)
             {
-                printf(BBLU"\n        Player 1 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
+                //printf(BBLU"\n        Player 1 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
+                return 1;
             }
             else if(score2>score1)
             {
-                printf(BRED"\n        Player 2 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
+                //printf(BRED"\n        Player 2 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
+                return 2;
             }
             else
             {
-                printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed"reset);
+               // printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed"reset);
+               return 3;
             }
         }
     }

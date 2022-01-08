@@ -1,4 +1,4 @@
-void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int turn,clock_t t1,clock_t t2,int undo)
+void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int turn,clock_t t1,clock_t t2,int undo,int redomoves)
 {
 
     system("cls");
@@ -112,7 +112,10 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
         printf(BYEL"    Invalid input, Try Again\n"reset);
     }
     if(undo==0){
-        printf(BWHT"No moves to undo\n"reset);
+        printf(BYEL"     No moves to undo\n"reset);
+    }
+    if(redomoves==0){
+        printf(BWHT"No Moves to redo"reset);
     }
 
     if(remMoves!=0)
