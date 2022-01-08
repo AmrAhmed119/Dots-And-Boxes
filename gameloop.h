@@ -1,12 +1,13 @@
-void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves)
+void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2[],int score1,int score2,int moves1,int moves2,int remMoves,int copygame[remMoves][7],int moves)
 {
 
     int row,col;
+    int u=1;
     int RowCol[2];
     char h = 205; //horizontal (odd,even)
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
-    char turn=1; //which player
+    int turn=1; //which player
     int playing =1; //0 when the game finished
     int invalid=0;
     char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //this helps us in coloring player's move
@@ -17,10 +18,11 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
     time_end = clock();
 
     time_start = clock();
-    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end);
+    printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
 
     while(playing)   //Game Loop
     {
+        u=1;
 
 
         if( ((m==2) && (turn==1)) || ((m==2) && (turn==2)) || ((m==1) && (turn==1)))
@@ -43,7 +45,12 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
 
         if((row==0) && (col==0))    //undo
         {
-
+            if(moves==0){
+                u=0;
+            }
+            else{
+                undo(&remMoves,copygame,Size,game,&moves,&turn,&moves1,&moves2,&score1,&score2,m);
+            }
         }
 
         else if((row==1) && (col==1))   //redo
@@ -59,7 +66,7 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
         else if((row==3) && (col==3)) //mainmenu
         {
             system("cls");
-            main();                       //this may cause stackover flow after alot of iterations.
+            return;                       //this may cause stackover flow after alot of iterations.
         }
 
         else if((row%2==1) && (col%2==0))   //horizontal line
@@ -86,6 +93,8 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     moves2++;
                 }
+                copygame[moves][0]=row;
+                copygame[moves][1]=col;
             }
             else
             {
@@ -104,10 +113,14 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                                 if(turn==1)
                                 {
                                     game[row-1][col]=b1;
+                                    copygame[moves][3]=row-1;
+                                    copygame[moves][4]=col;
                                 }
                                 else
                                 {
                                     game[row-1][col]=b2;
+                                    copygame[moves][3]=row-1;
+                                    copygame[moves][4]=col;
                                 }
                             }
                         }
@@ -124,24 +137,31 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                                 if(turn==1)
                                 {
                                     game[row+1][col]=b1;
+                                    copygame[moves][5]=row+1;
+                                    copygame[moves][6]=col;
                                 }
                                 else
                                 {
                                     game[row+1][col]=b2;
+                                    copygame[moves][5]=row+1;
+                                    copygame[moves][6]=col;
                                 }
                             }
                         }
                     }
                 }
+
                 if (((cmpch(game[row-1][col],b1)==0) || (cmpch(game[row-1][col],b2)==0))  && ((cmpch(game[row+1][col],b1)==0) || (cmpch(game[row+1][col],b2)==0)))
                 {
                     if(turn==1)
                     {
+                        copygame[moves][2]=turn;
                         score1=score1+2;
                         turn=2;
                     }
                     else if(turn==2)
                     {
+                        copygame[moves][2]=turn;
                         score2=score2+2;
                         turn=1;
                     }
@@ -150,14 +170,19 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     if(turn==1)
                     {
+                        copygame[moves][2]=turn;
                         score1++;
                         turn=2;
                     }
                     else if(turn==2)
                     {
+                        copygame[moves][2]=turn;
                         score2++;
                         turn=1;
                     }
+                }
+                else{
+                    copygame[moves][2]=turn;
                 }
 
 
@@ -169,7 +194,7 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     turn=1;
                 }
-
+                moves++;
             }
 
         }
@@ -196,6 +221,8 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     moves2++;
                 }
+                copygame[moves][0]=row;
+                copygame[moves][1]=col;
             }
             else
             {
@@ -217,10 +244,15 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                                 if(turn==1)
                                 {
                                     game[row][col-1]=b1;
+                                    copygame[moves][3]=row;
+                                    copygame[moves][4]=col-1;
+
                                 }
                                 else
                                 {
                                     game[row][col-1]=b2;
+                                    copygame[moves][3]=row;
+                                    copygame[moves][4]=col-1;
                                 }
 
                             }
@@ -239,10 +271,14 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                                 if(turn==1)
                                 {
                                     game[row][col+1]=b1;
+                                    copygame[moves][5]=row;
+                                    copygame[moves][6]=col+1;
                                 }
                                 else
                                 {
                                     game[row][col+1]=b2;
+                                    copygame[moves][5]=row;
+                                    copygame[moves][6]=col+1;
                                 }
                             }
                         }
@@ -252,11 +288,13 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     if(turn==1)
                     {
+                        copygame[moves][2]=turn;
                         score1=score1+2;
                         turn=2;
                     }
                     else if(turn==2)
                     {
+                        copygame[moves][2]=turn;
                         score2=score2+2;
                         turn=1;
                     }
@@ -265,14 +303,19 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     if(turn==1)
                     {
+                        copygame[moves][2]=turn;
                         score1++;
                         turn=2;
                     }
                     else if(turn==2)
                     {
+                        copygame[moves][2]=turn;
                         score2++;
                         turn=1;
                     }
+                }
+                else{
+                    copygame[moves][2]=turn;
                 }
 
 
@@ -284,6 +327,7 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
                 {
                     turn=1;
                 }
+                moves++;
             }
         }
 
@@ -296,7 +340,7 @@ void gameloop(int n,int m,int Size,char game[Size][Size],char name1[],char name2
         }
 
         time_end = clock();
-        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end);
+        printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
 
 
         if(remMoves!=0)

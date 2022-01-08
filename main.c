@@ -5,6 +5,8 @@
 #include "colors.h"
 #include "mainmenu.h"
 #include "comparecharacters.h"
+#include "undo.h"
+#include "undocomp.h"
 #include "vsComputer.h"
 #include "printgame.h"
 #include "gameloop.h"
@@ -91,12 +93,19 @@ int main()
     }
 
     int remMoves = 2*n*(n+1);
+    int copygame[remMoves][7];
+    int moves=0;
+    for(int i=0; i<remMoves; i++){
+        for(int j=0; j < 7; j++){
+                copygame[i][j]=0;
+        }
+    }
     one.score=0;
     two.score=0;
     one.moves= 0;
     two.moves = 0;
 
-    gameloop(n,m,Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves);
+    gameloop(n,m,Size, game, one.name, two.name, one.score, two.score, one.moves, two.moves, remMoves,copygame,moves);
 
 
     if(i==2)

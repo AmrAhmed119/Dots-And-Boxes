@@ -31,7 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="checkBox.h" />
 		<Unit filename="colors.h" />
 		<Unit filename="comparecharacters.h" />
 		<Unit filename="gameloop.h" />
@@ -40,6 +39,7 @@
 		</Unit>
 		<Unit filename="mainmenu.h" />
 		<Unit filename="printgame.h" />
+		<Unit filename="undo.h" />
 		<Unit filename="vsComputer.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
