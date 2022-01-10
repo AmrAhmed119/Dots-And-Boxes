@@ -21,7 +21,7 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
         {
             if(i==0 && j==0)
             {
-                printf("  ",game[i][j]);
+                printf("  ");
             }
             else if(i==0 || j==0)
             {
@@ -44,7 +44,7 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
                 }
                 else
                 {
-                    printf("  ",game[i][j]);
+                    printf("  ");
                 }
 
 
@@ -65,7 +65,7 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
                 }
                 else
                 {
-                    printf("  ",game[i][j]);
+                    printf("  ");
                 }
             }
             else if((i%2==0)&&(j%2==0))
@@ -84,7 +84,7 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
                 }
                 else
                 {
-                    printf("  ",game[i][j]);
+                    printf("  ");
                 }
             }
             else if((i%2==1)&&(j%2==1))

@@ -12,6 +12,7 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
             game[copygame[*moves-1][3]][copygame[*moves-1][4]]=' ';
             redogame[*redomoves][3]=copygame[*moves-1][3];
             redogame[*redomoves][4]=copygame[*moves-1][4];
+
             if(*turn == 1)
             {
                 *score1 -= 1;
@@ -20,6 +21,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
             {
                 *score2 -= 1;
             }
+            copygame[*moves-1][3]=0;
+            copygame[*moves-1][4]=0;
         }
         if(copygame[*moves-1][5] != 0)
         {
@@ -34,6 +37,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
             {
                 *score2 -= 1;
             }
+            copygame[*moves-1][5]=0;
+            copygame[*moves-1][6]=0;
         }
         *turn=copygame[*moves-1][2];
         if(copygame[*moves-1][2]==1)
@@ -64,6 +69,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
                     redogame[*redomoves][3]=copygame[*moves-1][3];
                     redogame[*redomoves][4]=copygame[*moves-1][4];
                     *score1-=1;
+                    copygame[*moves-1][3]=0;
+                    copygame[*moves-1][4]=0;
                 }
                 if(copygame[*moves-1][5] != 0)
                 {
@@ -71,6 +78,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
                     redogame[*redomoves][5]=copygame[*moves-1][5];
                     redogame[*redomoves][6]=copygame[*moves-1][6];
                     *score1-=1;
+                    copygame[*moves-1][5]=0;
+                    copygame[*moves-1][6]=0;
                 }
                 redogame[*redomoves][7]=r;
                 r=0;
@@ -95,6 +104,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
                     redogame[*redomoves][3]=copygame[*moves-1][3];
                     redogame[*redomoves][4]=copygame[*moves-1][4];
                     *score2-=1;
+                    copygame[*moves-1][3]=0;
+                    copygame[*moves-1][4]=0;
                 }
                 if(copygame[*moves-1][5] != 0)
                 {
@@ -102,6 +113,8 @@ void undo(int*remMoves,int copygame[*remMoves][7],int Size,char game[Size][Size]
                     redogame[*redomoves][5]=copygame[*moves-1][5];
                     redogame[*redomoves][6]=copygame[*moves-1][6];
                     *score2-=1;
+                    copygame[*moves-1][5]=0;
+                    copygame[*moves-1][6]=0;
                 }
                 *moves2-=1;
                 *moves-=1;

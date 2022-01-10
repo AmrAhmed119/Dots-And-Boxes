@@ -1,19 +1,15 @@
-   					   1 2 3 4 5 6 7 8 9
-   					 1 ў== ў== ў== ў== ў
-   					 2 |лл |лл |       |
-   					 3 ў== ў== ў== ў   ў
-   					 4 |лл |лл |       |
-   					 5 ў== ў== ў   ў   ў
-   					 6 |лл |лл |   |   |
-   					 7 ў== ў== ў== ў== ў
-   					 8 |лл |лл |лл |лл |
-   					 9 ў== ў== ў== ў== ў
+   					   1 2 3 4 5
+   					 1 ў== ў   ў
+   					 2 |лл |    
+   					 3 ў== ў   ў
+   					 4 |        
+   					 5 ў== ў== ў
 
 
-        Player 1 name: Amr 						        Player 2 name: Hussien				
-        Player 1 moves : 18						        Player 2 moves : 17				
-        Score 1: 4						                Score 2: 6				
+        Player 1 name: 1						        Player 2 name: 2				
+        Player 1 moves : 4						        Player 2 moves : 3				
+        Score 1: 1						                Score 2: 0				
 
-           Number of remaining moves : 5			          Time : 00:03
+           Number of remaining moves : 5			          Time : 00:19
 
-    Player's 2 turn: 
+    Player's 1 turn: 

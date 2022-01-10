@@ -42,6 +42,7 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
 
     while(playing)   //Game Loop
     {
+        invalid=0;
         u=1;
         x=1;
 
@@ -49,9 +50,9 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
         {
 
             printf(BWHT"\tEnter Row: ");
-            row = checkint();
+            row=checkint();
             printf(BWHT"\t\t\tEnter Column: ");
-            col = checkint();
+            col=checkint();
         }
 
         if((m==1) && (turn==2))  //computer turn

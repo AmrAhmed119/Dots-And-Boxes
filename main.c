@@ -53,10 +53,10 @@ int main()
 
         if(readrank==NULL)
         {
-            printf("File is empty");
-            readrank = fopen("Rank.txt","r");
+            readrank = fopen("Rank.txt","w");
             fclose(readrank);
             readrank = fopen("Rank.txt","r");
+
         }
 
         //read array of structs
@@ -314,7 +314,8 @@ int main()
             fclose(writerank);
         }
 
-        if(i==1 || i==2){
+        if(i==1 || i==2)
+        {
 
             if(winner==1)
             {
