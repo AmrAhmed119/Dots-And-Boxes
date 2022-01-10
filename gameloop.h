@@ -1,18 +1,37 @@
-int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],int namelen1,char name2[],int namelen2,int score1,int score2,int moves1,int moves2,int remMoves,int copygame[remMoves][7],int redogame[remMoves][8],int moves,int redomoves)
+int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],int namelen1,char name2[],int namelen2,int score1,int score2,int moves1,int moves2,int remMoves,int scorearray[])
 {
 
     int row,col;
-    int u=1;
-    int RowCol[2];
+    int RowCol[2]; //store row , col computer played
     char h = 205; //horizontal (odd,even)
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
     int playing =1; //0 when the game finished
-    int invalid=0;
+    int invalid=0,u=1,x=1; //variables (help us if there undo or redo moves can be played or not) and (invalid for invalid inputs)
+    int moves=0,redomoves=0;
+    int copygame[remMoves][7];   //for Undo
+    int redogame[remMoves][8];   //for Redo
     int r=0;
-    int x=1;
-    char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //this helps us in coloring player's move
 
+    for(int i=0; i<remMoves; i++)
+    {
+        for(int j=0; j < 7; j++)
+        {
+            copygame[i][j]=0;
+        }
+    }
+
+    for(int i=0; i<remMoves; i++)
+    {
+        for(int j=0; j < 8; j++)
+        {
+            redogame[i][j]=0;
+        }
+    }
+
+    char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //variables help us in coloring player(1 or 2) move
+
+    //for printing time
     clock_t time_start;
     clock_t time_end ;
     time_start = clock();
@@ -26,18 +45,16 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
         u=1;
         x=1;
 
-        if( ((m==2) && (turn==1)) || ((m==2) && (turn==2)) || ((m==1) && (turn==1)))
+        if(((m==2) && (turn==1)) || ((m==2) && (turn==2)) || ((m==1) && (turn==1)))  //player turn
         {
 
             printf(BWHT"\tEnter Row: ");
-            scanf("%d",&row);
-
+            row = checkint();
             printf(BWHT"\t\t\tEnter Column: ");
-            scanf("%d",&col);
+            col = checkint();
         }
 
-
-        if((m==1) && (turn==2))
+        if((m==1) && (turn==2))  //computer turn
         {
             computer(n,Size,game,RowCol);
             row = RowCol[0];
@@ -46,22 +63,25 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
 
         if((row==0) && (col==0))    //undo
         {
-            if(moves==0){
+            if(moves==0)
+            {
                 u=0;
             }
-            else{
+            else
+            {
                 undo(&remMoves,copygame,Size,game,&moves,&turn,&moves1,&moves2,&score1,&score2,m,redogame,&redomoves,r);
             }
         }
 
         else if((row==1) && (col==1))   //redo
         {
-            if(redomoves==0){
+            if(redomoves==0)
+            {
                 x=0;
             }
-            else{
-
-            redo(&remMoves,Size,game,&turn,&moves,&moves1,&moves2,&score1,&score2,m,redogame,copygame,&redomoves,r);
+            else
+            {
+                redo(&remMoves,Size,game,&turn,&moves,&moves1,&moves2,&score1,&score2,m,redogame,copygame,&redomoves,r);
             }
         }
 
@@ -70,44 +90,45 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
             int fileNum;
             system("cls");
             printf(BYEL"\n\n   Enter File Number  (choose 1 , 2 or 3): "reset);
-            scanf("%d",&fileNum);
+            fileNum = checkint();
 
-            if((fileNum==1) || (fileNum==2) || (fileNum==3)){
+            if((fileNum==1) || (fileNum==2) || (fileNum==3))
+            {
 
-            char whichfile[6];
-            sprintf(whichfile,"File%d.bin",fileNum); // sprintf used to store output on char buffer which are specified in sprintf
+                char whichfile[6];
+                sprintf(whichfile,"File%d.bin",fileNum); // sprintf used to store output on char buffer which are specified in sprintf
 
-            FILE *save;
-            save = fopen(whichfile,"wb");  //saving game data in a file
+                FILE *save;
+                save = fopen(whichfile,"wb");  //saving game data in a file
 
-            fwrite(&n,sizeof(int),1,save);
-            fwrite(&m,sizeof(int),1,save);
-            fwrite(&remMoves,sizeof(int),1,save);
-            fwrite(&moves1,sizeof(int),1,save);
-            fwrite(&moves2,sizeof(int),1,save);
-            fwrite(&score1,sizeof(int),1,save);
-            fwrite(&score2,sizeof(int),1,save);
-            fwrite(&turn,sizeof(int),1,save);
-            fwrite(copygame,sizeof(int),remMoves*7,save);
-            fwrite(redogame,sizeof(int),remMoves*8,save);
-            fwrite(&redomoves,sizeof(int),1,save);
-            fwrite(&moves,sizeof(int),1,save);
-            fwrite(game, sizeof(char),Size * Size,save);
-            fwrite(&namelen1,sizeof(int),1,save);
-            fwrite(name1,sizeof(char),namelen1,save);
-                if(m==2){
+                fwrite(&n,sizeof(int),1,save);
+                fwrite(&m,sizeof(int),1,save);
+                fwrite(&remMoves,sizeof(int),1,save);
+                fwrite(&moves1,sizeof(int),1,save);
+                fwrite(&moves2,sizeof(int),1,save);
+                fwrite(&score1,sizeof(int),1,save);
+                fwrite(&score2,sizeof(int),1,save);
+                fwrite(&turn,sizeof(int),1,save);
+                fwrite(game,sizeof(char),Size * Size,save);
+                fwrite(&namelen1,sizeof(int),1,save);
+                fwrite(name1,sizeof(char),namelen1,save);
+                if(m==2)                //we dont have to save for computer
+                {
                     fwrite(&namelen2,sizeof(int),1,save);
                     fwrite(name2,sizeof(char),namelen2,save);
-
                 }
+                fclose(save);
 
-            fclose(save);
-            //printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u);
+                printf(BYEL"\n   Game saved to %s\n  "reset,whichfile);
+                system("pause");
             }
-            else{
-                invalid=1;
+            else
+            {
+                printf(BYEL"\n  There is no existing file\n"reset);
+                system("pause");
             }
         }
+
         else if((row==3) && (col==3)) //mainmenu
         {
             system("cls");
@@ -153,11 +174,11 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
             }
             else
             {
-                invalid=1;//invalid input
+                invalid=1;
             }
             if(invalid!=1)
             {
-                if((row-2)>0)
+                if((row-2)>0)          //CheckBox
                 {
                     if( (cmpch(game[row-2][col],h1)==0) || (cmpch(game[row-2][col],h2)==0) )
                     {
@@ -181,7 +202,7 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                         }
                     }
                 }
-                if((row+2)<Size)
+                if((row+2)<Size)    //CheckBox
                 {
                     if( (cmpch(game[row+2][col],h1)==0) || (cmpch(game[row+2][col],h2)==0))
                     {
@@ -206,22 +227,22 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                     }
                 }
 
-                if (((cmpch(game[row-1][col],b1)==0) || (cmpch(game[row-1][col],b2)==0))  && ((cmpch(game[row+1][col],b1)==0) || (cmpch(game[row+1][col],b2)==0)))
+                if (((cmpch(game[row-1][col],b1)==0) || (cmpch(game[row-1][col],b2)==0))  && ((cmpch(game[row+1][col],b1)==0) || (cmpch(game[row+1][col],b2)==0)))  //check two boxes
                 {
                     if(turn==1)
                     {
                         copygame[moves][2]=turn;
-                        score1=score1+2;
+                        score1+=2;
                         turn=2;
                     }
                     else if(turn==2)
                     {
                         copygame[moves][2]=turn;
-                        score2=score2+2;
+                        score2+=2;
                         turn=1;
                     }
                 }
-                else if(((cmpch(game[row-1][col],b1)==0)  || (cmpch(game[row-1][col],b2)==0))  || ((cmpch(game[row+1][col],b1)==0) || (cmpch(game[row+1][col],b2)==0)))
+                else if(((cmpch(game[row-1][col],b1)==0)  || (cmpch(game[row-1][col],b2)==0))  || ((cmpch(game[row+1][col],b1)==0) || (cmpch(game[row+1][col],b2)==0)))  //check one box
                 {
                     if(turn==1)
                     {
@@ -236,7 +257,8 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                         turn=1;
                     }
                 }
-                else{
+                else
+                {
                     copygame[moves][2]=turn;
                 }
 
@@ -299,7 +321,7 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
             if(invalid!=1)
             {
 
-                if((col-2)>0)
+                if((col-2)>0)       //CheckBox
                 {
                     if((cmpch(game[row][col-2],v1)==0) || (cmpch(game[row][col-2],v2)==0))
                     {
@@ -326,7 +348,7 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                     }
                 }
 
-                if((col+2)<Size)
+                if((col+2)<Size)        //CheckBox
                 {
                     if((cmpch(game[row][col+2],v1)==0) || (cmpch(game[row][col+2],v2)==0))
                     {
@@ -350,22 +372,22 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                         }
                     }
                 }
-                if(((cmpch(game[row][col-1],b1)==0) || (cmpch(game[row][col-1],b2)==0))   && ((cmpch(game[row][col+1],b1)==0) || (cmpch(game[row][col+1],b2)==0)))
+                if(((cmpch(game[row][col-1],b1)==0) || (cmpch(game[row][col-1],b2)==0))   && ((cmpch(game[row][col+1],b1)==0) || (cmpch(game[row][col+1],b2)==0)))  //get two boxes
                 {
                     if(turn==1)
                     {
                         copygame[moves][2]=turn;
-                        score1=score1+2;
+                        score1+=2;
                         turn=2;
                     }
                     else if(turn==2)
                     {
                         copygame[moves][2]=turn;
-                        score2=score2+2;
+                        score2+=2;
                         turn=1;
                     }
                 }
-                else if(((cmpch(game[row][col-1],b1)==0) || (cmpch(game[row][col-1],b2)==0)) || ((cmpch(game[row][col+1],b1)==0) || (cmpch(game[row][col+1],b2)==0)))
+                else if(((cmpch(game[row][col-1],b1)==0) || (cmpch(game[row][col-1],b2)==0)) || ((cmpch(game[row][col+1],b1)==0) || (cmpch(game[row][col+1],b2)==0)))  //get one box
                 {
                     if(turn==1)
                     {
@@ -380,7 +402,8 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
                         turn=1;
                     }
                 }
-                else{
+                else
+                {
                     copygame[moves][2]=turn;
                 }
 
@@ -397,43 +420,163 @@ int gameloop(int n,int m,int turn,int Size,char game[Size][Size],char name1[],in
             }
         }
 
-
-
         else //invalid input
         {
             invalid=1;
 
         }
 
+
         time_end = clock();
         printGame(invalid,Size,game,name1,name2,score1,score2,moves1,moves2,remMoves,turn,time_start,time_end,u,x);
 
+        //print grid in text file for debugging
 
-        if(remMoves!=0)
+        FILE *debug;
+        debug = fopen("Debug.txt","w");
+        if(debug==NULL)
         {
-            playing=1;
+            printf("Error");
         }
         else
         {
-            playing=0;
+            for(int i=0; i<Size; i++)
+            {
+                fprintf(debug,"   \t\t\t\t\t");
+                for(int j=0; j<Size; j++)
+                {
+                    if(i==0 && j==0)
+                    {
+                        fprintf(debug,"  ",game[i][j]);
+                    }
+                    else if(i==0 || j==0)
+                    {
+                        fprintf(debug," %x",game[i][j]);
+
+                    }
+                    else if((i%2==1) && (j%2==0))
+                    {
+                        if(game[i][j]==h1)
+                        {
+                            game[i][j]=h;
+                            fprintf(debug,"%c%c",'=','=');
+                            game[i][j]=h1;
+                        }
+                        else if(game[i][j]==h2)
+                        {
+                            game[i][j]=h;
+                            fprintf(debug,"%c%c",'=','=');
+                            game[i][j]=h2;
+                        }
+                        else
+                        {
+                            fprintf(debug,"  ",game[i][j]);
+                        }
+
+
+                    }
+                    else if((i%2==0)&&(j%2==1))
+                    {
+                        if(game[i][j]==v1)
+                        {
+                            game[i][j]=v;
+                            fprintf(debug," %c",'|');
+                            game[i][j] =v1;
+                        }
+                        else if(game[i][j]==v2)
+                        {
+                            game[i][j]=v;
+                            fprintf(debug," %c",'|');
+                            game[i][j]=v2;
+                        }
+                        else
+                        {
+                            fprintf(debug,"  ",game[i][j]);
+                        }
+                    }
+                    else if((i%2==0)&&(j%2==0))
+                    {
+                        if(game[i][j]==b1)
+                        {
+                            game[i][j]=b;
+                            fprintf(debug,"%c%c",game[i][j],game[i][j]);
+                            game[i][j]=b1;
+                        }
+                        else if(game[i][j]==b2)
+                        {
+                            game[i][j]=b;
+                            fprintf(debug,"%c%c",game[i][j],game[i][j]);
+                            game[i][j]=b2;
+                        }
+                        else
+                        {
+                            fprintf(debug,"  ",game[i][j]);
+                        }
+                    }
+                    else if((i%2==1)&&(j%2==1))
+                    {
+                        game[i][j]=254;
+                        fprintf(debug," %c",game[i][j]);
+
+                    }
+                }
+                fprintf(debug,"\n");
+            }
+
+            fprintf(debug,"\n\n");
+            fprintf(debug,"        Player 1 name: %s\t\t\t\t\t\t",name1);
+            fprintf(debug,"        Player 2 name: %s\t\t\t\t\n",name2);
+            fprintf(debug,"        Player 1 moves : %d\t\t\t\t\t\t",moves1);
+            fprintf(debug,"        Player 2 moves : %d\t\t\t\t\n",moves2);
+            fprintf(debug,"        Score 1: %d\t\t\t\t\t\t",score1);
+            fprintf(debug,"                Score 2: %d\t\t\t\t\n\n",score2);
+            fprintf(debug,"           Number of remaining moves : %d\t\t\t",remMoves);
+
+            int timediff = (time_end-time_start) / CLOCKS_PER_SEC;
+            int Min,sec;
+
+            sec = timediff % 60;
+            Min = timediff / 60;
+            fprintf(debug,"          Time : %.2d:%.2d\n\n",Min,sec);
+
+            if(remMoves!=0)
+            {
+            if(turn==1)
+            {
+                fprintf(debug,"    Player's 1 turn: ");
+            }
+            else if(turn==2)
+            {
+                fprintf(debug,"    Player's 2 turn: ");
+            }
+            }
+        }
+        fclose(debug);
+
+        if(remMoves!=0)
+        {
+            playing=1;  //still game on
+        }
+        else
+        {
+            playing=0;  //game ends
         }
 
-        if(playing==0)
+        if(playing==0)  //End game
         {
+            scorearray[0] = score1;
+            scorearray[1] = score2;
             if(score1>score2)
             {
-                //printf(BBLU"\n        Player 1 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
-                return 1;
+                return 1;    //Player 1 wins
             }
             else if(score2>score1)
             {
-                //printf(BRED"\n        Player 2 Wins ....Congratulations\n\t\t\t\t\n\t\t\tGame Ended,hope you enjoyed"reset);
-                return 2;
+                return 2;   //Player 2 wins
             }
             else
             {
-               // printf(BYEL"\n        Tie game\n\t\t\t\tGame Ended,hope you enjoyed"reset);
-               return 3;
+                return 3;   //Tie game
             }
         }
     }

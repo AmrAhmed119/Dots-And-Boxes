@@ -3,7 +3,7 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
 
     system("cls");
 
-    char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f'; //this helps us in coloring player's move where 1 or 2 refers to playernumber
+    char h1='a',h2='b',v1='c',v2='d',b1='e',b2='f';
     char h = 205; //horizontal (odd,even)
     char v = 186; //vertical (even,odd)
     char b = 219; //box (even,even)
@@ -105,17 +105,19 @@ void printGame(int invalid,int Size,char game[Size][Size],char name1[],char name
     printf(BRED"                Score 2: %d\t\t\t\t\n\n"reset,score2);
     printf(BYEL"           Number of remaining moves : %d\t\t\t"reset,remMoves);
     printf(BYEL"          Time : %.2d:%.2d\n\n"reset,Min,sec);
-    printf(BWHT" \t\tEnter number of row and column \t (for a choose 10)\t(for b choose 11)\n\t\t\t0, 0 for undo\t1, 1 for redo\t 2, 2 for save\t 3, 3 for main menu\n\n"reset);
+    printf(BWHT"\t\tEnter number of row and column \t (for a choose 10)\t(for b choose 11) \n\t\t\t0, 0 for undo\t1, 1 for redo\t 2, 2 for save\t 3, 3 for main menu\n\n"reset);
 
     if(invalid==1)
     {
         printf(BYEL"    Invalid input, Try Again\n"reset);
     }
-    if(undo==0){
+    if(undo==0)
+    {
         printf(BYEL"     No moves to undo\n"reset);
     }
-    if(redomoves==0){
-        printf(BWHT"No Moves to redo"reset);
+    if(redomoves==0)
+    {
+        printf(BYEL"     No Moves to redo\n"reset);
     }
 
     if(remMoves!=0)

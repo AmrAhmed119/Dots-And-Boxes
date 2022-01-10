@@ -1,0 +1,38 @@
+# depslib dependency file v1.0
+1641739744 source:c:\users\hp\desktop\programming project\dots and boxes\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"checkint.h"
+	"colors.h"
+	"mainmenu.h"
+	"comparecharacters.h"
+	"redo.h"
+	"undo.h"
+	"vsComputer.h"
+	"printgame.h"
+	"gameloop.h"
+
+1641747361 c:\users\hp\desktop\programming project\dots and boxes\colors.h
+
+1641694232 c:\users\hp\desktop\programming project\dots and boxes\mainmenu.h
+
+1640024937 c:\users\hp\desktop\programming project\dots and boxes\startgame.h
+
+1641755195 c:\users\hp\desktop\programming project\dots and boxes\gameloop.h
+
+1641740067 c:\users\hp\desktop\programming project\dots and boxes\printgame.h
+
+1640439464 c:\users\hp\desktop\programming project\dots and boxes\checkbox.h
+
+1641602294 c:\users\hp\desktop\programming project\dots and boxes\comparecharacters.h
+
+1641730221 c:\users\hp\desktop\programming project\dots and boxes\vscomputer.h
+
+1641507498 c:\users\hp\desktop\programming project\dots and boxes\undo.h
+
+1641507496 c:\users\hp\desktop\programming project\dots and boxes\redo.h
+
+1641679186 c:\users\hp\desktop\programming project\dots and boxes\checkint.h
+
